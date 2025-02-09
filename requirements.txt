@@ -1,0 +1,9 @@
+flask
+datasets
+gunicorn==19.9.0
+transformers
+torch
+img2table 
+pandas 
+openpyxl
+pytesseract

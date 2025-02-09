@@ -1,0 +1,76 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="author" content="colorlib.com">
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+    <link href="static/css/main.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+  </head>
+  <body>
+    <button class="btn" onclick="window.location.href = '/' ; " ><i class="fa fa-home"></i> Home</button>
+    <div class="s131">
+      <form id="upload-file" method="post" enctype="multipart/form-data">
+        <div class="inner-form">
+          <div class="input-field first-wrap">
+              <input id="file-input" name="file" type="file">
+          </div>
+       
+          <div class="input-field third-wrap">
+              <button class="btn-search" id="upload-file-btn" type="button">Upload</button>
+          </div>
+        </div>
+      </form>
+    
+      <div style="height: 24px;"></div>
+      <div class="bt-space"></div>
+    </div>
+    <div class="show-data"></div>
+
+    <script src="static/js/extention/choices.js"></script>
+    <script>
+      const choices = new Choices('[data-trigger]',
+      {
+        searchEnabled: false
+      });
+
+      $(function() {
+        const allowedExtensions = ['pdf']; // Allowed file extensions options: 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'
+
+        $('#upload-file-btn').click(function() {
+            var fileInput = $('#file-input');
+            var file = fileInput[0].files[0];
+
+            if (file) {
+                var fileName = file.name;
+                var fileExtension = fileName.split('.').pop().toLowerCase();
+
+                if (allowedExtensions.indexOf(fileExtension) === -1) {
+                    alert('Invalid file format! Allowed format: ' + allowedExtensions.join(', ') + '. Please convert the document to pdf and upload');
+                    return; // Stop further execution if the format is not allowed
+                }
+
+                var form_data = new FormData($('#upload-file')[0]);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/file_upload',
+                    data: form_data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(data) {
+                        console.log('Success!');
+                        window.open('/fileIndex', '_blank');
+                    }
+                });
+            } else {
+                alert('Please select a file to upload.');
+            }
+        });
+    });
+ 
+    </script>
+  </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>

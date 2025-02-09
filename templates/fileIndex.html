@@ -1,0 +1,72 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="author" content="colorlib.com">
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+    <link href="static/css/main.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+  </head>
+  <body>
+    <button class="btn" onclick="window.location.href = '/' ; " ><i class="fa fa-home"></i> Home</button>
+    <div class="s131">
+      <form>
+        <div class="inner-form">
+          <div class="input-field first-wrap">
+            Choose the API for FILE: {{filename}}
+          </div>
+          <div class="input-field second-wrap">
+            <div class="input-select">
+              <select data-trigger="" name="choices-single-defaul" id="choices_id">
+                <option placeholder=""><i>Choose the API</i></option>
+                <option>Table Extraction</option>
+                <option>Table Summary</option>
+              </select>
+            </div>
+          </div>
+          <div class="input-field third-wrap">
+            <button class="btn-search" type="button" onclick="sendData()">SUBMIT</button>
+          </div>
+        </div>
+      </form>
+      <div class ="msg"></div>
+      <div style="height: 24px;"></div>
+      <div class="bt-space"></div>
+    </div>
+    
+    <div class="show-data"></div>
+
+    <script src="static/js/extention/choices.js"></script>
+    <script>
+      const choices = new Choices('[data-trigger]',
+      {
+        searchEnabled: false
+      });
+
+      function sendData() { 
+            $.ajax({ 
+                url: '/file_selected_action', 
+                type: 'POST', 
+                contentType: 'application/json', 
+                data: JSON.stringify({ "choices":$("#choices_id").val()}), 
+            }).done(function(response) {
+              $(".msg").html('');
+              var html= "<div><mark>Scroll Down to see the result</mark><br> You might have to wait for upto 3 minutes for the Table Summary</div>"
+              $(".msg").append(html);
+
+          $(".show-data").html('');
+
+            var html= "<div bgcolor=white><h1>\n\n RESULTS </h1>\n\n ";
+            data = response.response;
+            console.log('Data',data)
+            html += data
+            html +="</div>";
+            $(".show-data").append(html);
+            });
+   <!--$('#display_text').style.visibility=True;-->
+        }
+ 
+    </script>
+  </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>
